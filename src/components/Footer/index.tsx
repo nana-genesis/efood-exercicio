@@ -1,45 +1,43 @@
+import React from 'react'
 import { Container, FooterSection, Link, Links, SectionTitle } from './styles'
 
-const currrentYear = new Date().getFullYear()
+const currentYear = new Date().getFullYear()
 
 const Footer = () => (
   <Container>
     <div className="container">
       <FooterSection>
         <SectionTitle>Categorias</SectionTitle>
-        <Links>
+        {/* Usei as="ul" para garantir que o navegador entenda que é uma lista */}
+        <Links as="ul">
           <li>
             <Link>Pratos especiais</Link>
           </li>
-
           <li>
             <Link>Especial do dia</Link>
           </li>
-
           <li>
-            <Link>Promoçôes especiais</Link>
+            <Link>Promoções especiais</Link>
           </li>
         </Links>
       </FooterSection>
 
       <FooterSection>
         <SectionTitle>Acesso Rápido</SectionTitle>
-        <Links>
+        <Links as="ul">
           <li>
             <Link>Prato recomendado</Link>
           </li>
-
           <li>
-            <Link>Promoçõe do dia</Link>
+            <Link>Promoção do dia</Link>
           </li>
-
           <li>
             <Link>Especial do dia</Link>
           </li>
         </Links>
       </FooterSection>
 
-      <p>{currrentYear} - &copy; E-FOOD Todos os direitos reservados</p>
+      <p>{currentYear} - &copy; E-FOOD Todos os direitos reservados</p>
     </div>
   </Container>
 )

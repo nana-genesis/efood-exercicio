@@ -1,6 +1,17 @@
 import { createGlobalStyle } from 'styled-components'
 
-export const cores = {
+export type Cores = {
+  branca: string
+  corSalmao: string
+  bege: string
+  corDePeleFundo: string
+  corDePeleFundoEscuro: string
+  begeClaro: string
+  fundo: string
+  preto: string
+}
+
+export const cores: Cores = {
   branca: '#fff',
   corSalmao: '#E66767',
   bege: '#FFEBD9',

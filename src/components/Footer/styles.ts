@@ -2,28 +2,35 @@ import styled from 'styled-components'
 import { cores } from '../../styles'
 
 export const Container = styled.footer`
-  background-color: ${cores.corDePeleFundoEscuro};
-  padding: 32px 0;
-  font-size: 14px;
-`
-
-export const SectionTitle = styled.h4`
-  color: ${cores.branca};
-  font-size: 16px;
-  font-weight: bold;
-`
-
-export const Links = styled.ul`
-  display: flex;
-  margin-top: 16px;
-`
-
-export const Link = styled.a`
-  color: ${cores.corSalmao};
-  text-decoration: none;
-  margin-right: 8px;
+  background-color: ${cores.corDePeleFundo};
+  padding: 40px 0;
+  text-align: center;
 `
 
 export const FooterSection = styled.div`
-  margin-bottom: 64px;
+  margin-bottom: 32px;
+
+  img {
+    width: 125px;
+  }
+`
+
+export const SocialLinks = styled.ul`
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 80px;
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
+`
+
+export const SectionTitle = styled.p`
+  color: ${cores.corSalmao};
+  font-size: 10px;
+  max-width: 480px;
+  margin: 0 auto;
+  line-height: 12px;
 `

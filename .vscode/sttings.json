@@ -3,7 +3,5 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  "cSpell.words": [
-    "atribuiçâo"
-  ]
+  "cSpell.words": ["atribuiçâo"]
 }

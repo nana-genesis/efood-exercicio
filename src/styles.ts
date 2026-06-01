@@ -3,10 +3,8 @@ import { createGlobalStyle } from 'styled-components'
 export const cores = {
   branca: '#fff',
   corSalmao: '#E66767',
-  corDePeleFundo: '#FFEBD9',
-  corDePeleFundoEscuro: '#ffebc1',
-  corDeFundoHome: 'rgb(255, 195, 142)',
-  preto: '#000'
+  bege: '#FFEBD9',
+  begeClaro: '#FFF8F2'
 }
 
 export const GlobalCss = createGlobalStyle`
@@ -16,17 +14,31 @@ export const GlobalCss = createGlobalStyle`
     box-sizing: border-box;
     font-family: "Roboto", sans-serif;
     list-style: none;
+    text-decoration: none;
   }
 
   body {
-    background-color: ${cores.corDeFundoHome};
-    color: ${cores.branca};
-    padding-top: 40px;
+    background-color: ${cores.begeClaro};
+    color: ${cores.corSalmao};
   }
 
-.container {
-  max-width: 1024px;
-  width: 100%;
-  margin: 0 auto;
-}
+  .container {
+    max-width: 1024px;
+    width: 100%;
+    margin: 0 auto;
+
+    @media (max-width: 1024px) {
+      width: 90%;
+    }
+  }
+
+  .loader-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 0;
+    width: 100%;
+    color: ${cores.corSalmao};
+    font-weight: bold;
+  }
 `

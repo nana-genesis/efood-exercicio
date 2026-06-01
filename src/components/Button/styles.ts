@@ -1,25 +1,25 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-
 import { cores } from '../../styles'
 
 export const ButtonContainer = styled.button`
-  border: 2px solid ${cores.branca};
-  color: ${cores.branca};
-  background-color: transparent; //é para deixar o botão transparente
-  font-size: 16px;
+  background-color: ${cores.corSalmao};
+  color: ${cores.bege};
+  border: none;
+  padding: 4px 6px;
   font-weight: bold;
-  padding: 8px 16px;
-  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-block;
 `
 
 export const ButtonLink = styled(Link)`
-  border: 2px solid ${cores.branca};
-  color: ${cores.branca};
-  background-color: transparent; //é para deixar o botão transparente
-  font-size: 16px;
+  background-color: ${cores.corSalmao};
+  color: ${cores.bege};
+  border: none;
+  padding: 4px 6px;
   font-weight: bold;
-  padding: 8px 16px;
+  font-size: 14px;
   text-decoration: none;
-  border-radius: 8px;
+  display: inline-block;
 `

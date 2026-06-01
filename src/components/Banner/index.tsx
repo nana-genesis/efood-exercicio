@@ -1,25 +1,31 @@
-import { Imagem, ImagemEfood } from './styles'
+import { Imagem, BannerContainer, Titulo, BannerTag } from './styles'
 
-import bannerImg from '../../assets/images/VectorFundoCabecalho.png'
-import bannerImgEfood from '../../assets/images/logo.png'
-import Button from '../Button'
+type Props = {
+  image?: string
+  type?: string
+  title?: string
+  showHome?: boolean
+}
 
-const Banner = () => (
-  <Imagem style={{ backgroundImage: `url(${bannerImg})` }}>
-    <div>
-      <ImagemEfood
-        style={{ backgroundImage: `url(${bannerImgEfood})` }}
-      ></ImagemEfood>
-    </div>
-    <div>
-      <p>Viva experiências gastronômicas no conforto da sua casa</p>
-    </div>
-    <div className="container">
-      <Button type="link" to="/produto" title="Clique auq para pedir Agora">
-        Peça Já o Seu!
-      </Button>
-    </div>
-  </Imagem>
-) //é para colocar a fóto do banner no site
+const Banner = ({ image, type, title, showHome }: Props) => {
+  if (showHome) {
+    return (
+      <Imagem style={{ backgroundImage: `url(${image})` }}>
+        <div className="container">
+          <p>Viva experiências gastronômicas no conforto da sua casa</p>
+        </div>
+      </Imagem>
+    )
+  }
+
+  return (
+    <Imagem style={{ backgroundImage: `url(${image})` }}>
+      <BannerContainer className="container">
+        <BannerTag>{type}</BannerTag>
+        <Titulo>{title}</Titulo>
+      </BannerContainer>
+    </Imagem>
+  )
+}
 
 export default Banner

@@ -1,5 +1,5 @@
 import ProductsList from '../../components/ProductsList'
-import Food from '../../Models/Food'
+import Food from '../../models/Foods'
 
 import macarrao from '../../assets/images/macarrao.png'
 import pizza from '../../assets/images/pizza.png'

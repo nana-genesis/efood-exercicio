@@ -1,28 +1,29 @@
-import Food from '../../Models/Food'
+import { Restaurant } from '../../services/api'
 import Product from '../Product'
 import { Container, List } from './styles'
 
-//aq vou fazer um elemento de propriedades Props. e esportando elas é posivel manipular no styles por exemplo
 export type Props = {
-  title: string
+  title?: string
   background: 'salmon' | 'black'
-  food: Food[]
+  restaurants: Restaurant[]
 }
 
-const ProductsList = ({ background, title, food }: Props) => (
+const ProductsList = ({ background, title, restaurants }: Props) => (
   <Container background={background}>
     <div className="container">
-      <h2>{title}</h2>
+      {title && <h2>{title}</h2>}
       <List>
-        {food.map((food) => (
+        {restaurants.map((rest) => (
           <Product
-            key={food.id}
-            category={food.category}
-            description={food.description}
-            image={food.image}
-            infos={food.infos}
-            system={food.system}
-            title={food.title}
+            key={rest.id}
+            id={rest.id}
+            category={rest.tipo}
+            description={rest.descricao}
+            image={rest.capa}
+            infos={rest.destacado ? ['Destaque da semana', rest.tipo] : [rest.tipo]}
+            system="Saiba mais"
+            title={rest.titulo}
+            avaliacao={rest.avaliacao}
           />
         ))}
       </List>

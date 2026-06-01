@@ -1,47 +1,66 @@
 import styled from 'styled-components'
-import { TagContainer } from '../Tag/styles'
 import { cores } from '../../styles'
 
 export const Imagem = styled.div`
   width: 100%;
-  height: 560px;
+  height: 384px;
   display: block;
   background-repeat: no-repeat;
-  background-size: cover; //é para ocupar toda a alargura disponivel
+  background-size: cover;
+  position: relative;
+  display: flex;
+  align-items: center;
 
-  .container {
-    position: relative;
-    padding-top: 480px;
-    display: block;
-    justify-content: space-between; //joga cada elemento para cantos opóstos
-    align-items: flex-end; //sem isso o botão fica do tamanho total da div
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    content: '';
   }
 
-  ${TagContainer} {
-    position: absolute;
-    top: 32px;
+  .container {
+    z-index: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
   }
 
   p {
-    margin-left: 600px;
-    color: ${cores.corSalmao};
+    color: ${cores.branca};
+    font-size: 36px;
     font-weight: bold;
-    font-size: 40px;
-    font: Roboto;
-    max-width: 40%;
+    max-width: 680px;
+    line-height: 42px;
+    z-index: 1;
     text-align: center;
+    margin: 0 auto;
   }
 `
-export const ImagemEfood = styled.div`
-  padding: 200px;
-  background-repeat: no-repeat;
-  margin-top: 64px;
+
+export const BannerContainer = styled.div`
+  z-index: 1;
+  position: relative;
   display: flex;
-  margin-left: 900px;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 32px 0;
+`
+
+export const BannerTag = styled.span`
+  font-size: 32px;
+  font-weight: 100;
+  color: ${cores.branca};
 `
 
 export const Titulo = styled.h2`
-  font-size: 36px;
-  font-weight: bold;
-  max-width: 450px;
+  font-size: 32px;
+  font-weight: 900;
+  color: ${cores.branca};
 `

@@ -1,113 +1,72 @@
+import { useState } from 'react'
+import Header from '../../components/Header'
 import Banner from '../../components/Banner'
 import ProductsList from '../../components/ProductsList'
-import Food from '../../Models/Food'
+import { useGetRestaurantsQuery } from '../../services/api'
+import styled from 'styled-components'
+import { cores } from '../../styles'
 
-import macarrao from '../../assets/images/macarrao.png'
-import pizza from '../../assets/images/pizza.png'
-import suschi from '../../assets/images/suchi.png'
+const SearchContainer = styled.div`
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
 
-const promocoes: Food[] = [
-  {
-    id: 1,
-    category: 'promocoes',
-    description:
-      'Peça já o melhor da culinária japonesa no conforto da sua casa! Sushis frescos, sashimis deliciosos e pratos quentes irresistíveis. Entrega rápida, embalagens cuidadosas e qualidade garantida.Experimente o Japão sem sair do lar com nosso delivery!',
-    title: 'Hioki Sushi',
-    system: 'Saiba Mais!',
-    infos: ['15%', 'R$ 65,00'],
-    image: suschi
-  },
+  input {
+    width: 100%;
+    max-width: 450px;
+    padding: 12px;
+    border: 2px solid ${cores.corSalmao};
+    background-color: ${cores.begeClaro};
+    color: ${cores.corSalmao};
+    font-weight: bold;
+    outline: none;
+    border-radius: 8px;
 
-  {
-    id: 2,
-    category: 'promocoes',
-    description:
-      'Peça já o melhor da culinária japonesa no conforto da sua casa! Sushis frescos, sashimis deliciosos e pratos quentes irresistíveis. Entrega rápida, embalagens cuidadosas e qualidade garantida.Experimente o Japão sem sair do lar com nosso delivery!',
-    title: 'La Dolce Vita Trattoria',
-    system: 'Saiba Mais!',
-    infos: ['15%', 'R$ 65,00'],
-    image: macarrao
-  },
-
-  {
-    id: 3,
-    category: 'promocoes',
-    description:
-      'Peça já o melhor da culinária japonesa no conforto da sua casa! Sushis frescos, sashimis deliciosos e pratos quentes irresistíveis. Entrega rápida, embalagens cuidadosas e qualidade garantida.Experimente o Japão sem sair do lar com nosso delivery!',
-    title: 'Hioki Sushi',
-    system: 'Saiba Mais!',
-    infos: ['15%', 'R$ 65,00'],
-    image: suschi
-  },
-
-  {
-    id: 4,
-    category: 'promocoes',
-    description:
-      'Peça já o melhor da culinária japonesa no conforto da sua casa! Sushis frescos, sashimis deliciosos e pratos quentes irresistíveis. Entrega rápida, embalagens cuidadosas e qualidade garantida.Experimente o Japão sem sair do lar com nosso delivery!',
-    title: 'Pizza Marguerita',
-    system: 'Saiba Mais!',
-    infos: ['15%', 'R$ 65,00'],
-    image: pizza
+    &::placeholder {
+      color: ${cores.corSalmao};
+      opacity: 0.6;
+    }
   }
-]
+`
 
-const emBreve: Food[] = [
-  {
-    id: 5,
-    category: 'em breve',
-    description:
-      'A La Dolce Vita Trattoria leva a autêntica cozinha italiana até você! Desfrute de massas caseiras, pizzas deliciosas e risotos incríveis, tudo no conforto do seu lar. Entrega rápida, pratos bem embalados e sabor inesquecível. Peça já!',
-    title: 'Macarrão La Dolce',
-    system: 'Saiba mais!',
-    infos: ['19/08'],
-    image: macarrao
-  },
+const Home = () => {
+  const { data: restaurantes, isLoading } = useGetRestaurantsQuery()
+  const [searchTerm, setSearchTerm] = useState('')
 
-  {
-    id: 6,
-    category: 'em breve',
-    description:
-      'A clássica Marguerita: molho de tomate suculento, mussarela derretida, manjericão fresco e um toque de azeite. Sabor e simplicidade!',
-    title: 'Pizza',
-    system: 'Saiba mais!',
-    infos: ['19/08'],
-    image: pizza
-  },
-
-  {
-    id: 7,
-    category: 'em breve',
-    description:
-      'A La Dolce Vita Trattoria leva a autêntica cozinha italiana até você! Desfrute de massas caseiras, pizzas deliciosas e risotos incríveis, tudo no conforto do seu lar. Entrega rápida, pratos bem embalados e sabor inesquecível. Peça já!',
-    title: 'Macarrão La Dolce',
-    system: 'Saiba mais!',
-    infos: ['19/08'],
-    image: macarrao
-  },
-
-  {
-    id: 8,
-    category: 'em breve',
-    description:
-      'A clássica Marguerita: molho de tomate suculento, mussarela derretida, manjericão fresco e um toque de azeite. Sabor e simplicidade!',
-    title: 'Pizza',
-    system: 'Saiba mais!',
-    infos: ['19/08'],
-    image: pizza
+  if (isLoading) {
+    return (
+      <div className="loader-container">
+        <h3>Carregando...</h3>
+      </div>
+    )
   }
-]
 
-const Home = () => (
-  <>
-    <Banner />
-    <ProductsList
-      food={promocoes}
-      title="Promoções do dia"
-      background="salmon"
-    />
-    <ProductsList food={emBreve} title="Especial do dia" background="black" />
-  </>
-)
+  if (!restaurantes) return null
+
+  const filteredRestaurants = restaurantes.filter((res) =>
+    res.titulo.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
+  return (
+    <>
+      <Header />
+      <Banner
+        showHome
+        image="https://raw.githubusercontent.com/gian-mario/efood/main/src/assets/images/fundo_home.png"
+      />
+      <div className="container">
+        <SearchContainer>
+          <input
+            type="text"
+            placeholder="Buscar restaurante..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </SearchContainer>
+        <ProductsList restaurants={filteredRestaurants} background="salmon" />
+      </div>
+    </>
+  )
+}
 
 export default Home

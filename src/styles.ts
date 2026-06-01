@@ -4,8 +4,11 @@ export const cores = {
   branca: '#fff',
   corSalmao: '#E66767',
   bege: '#FFEBD9',
+  corDePeleFundo: '#FFEBD9',
+  corDePeleFundoEscuro: '#ffebc1',
   begeClaro: '#FFF8F2',
-  fundo: '#FFF8F2'
+  fundo: '#FFF8F2',
+  preto: '#000'
 }
 
 export const GlobalCss = createGlobalStyle`

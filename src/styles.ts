@@ -4,7 +4,8 @@ export const cores = {
   branca: '#fff',
   corSalmao: '#E66767',
   bege: '#FFEBD9',
-  begeClaro: '#FFF8F2'
+  begeClaro: '#FFF8F2',
+  fundo: '#FFF8F2'
 }
 
 export const GlobalCss = createGlobalStyle`
@@ -18,7 +19,7 @@ export const GlobalCss = createGlobalStyle`
   }
 
   body {
-    background-color: ${cores.begeClaro};
+    background-color: ${cores.fundo};
     color: ${cores.corSalmao};
   }
 

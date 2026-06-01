@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Header from '../../components/Header'
 import Banner from '../../components/Banner'
 import ProductsList from '../../components/ProductsList'
@@ -29,7 +29,7 @@ const SearchContainer = styled.div`
   }
 `
 
-const Home = () => {
+export default function Home() {
   const { data: restaurantes, isLoading } = useGetRestaurantsQuery()
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -43,9 +43,9 @@ const Home = () => {
 
   if (!restaurantes) return null
 
-  const filteredRestaurants = restaurantes.filter((res) =>
-    res.titulo.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const filteredRestaurants = restaurantes.filter(function (res) {
+    return res.titulo.toLowerCase().includes(searchTerm.toLowerCase())
+  })
 
   return (
     <>
@@ -60,7 +60,9 @@ const Home = () => {
             type="text"
             placeholder="Buscar restaurante..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={function (e) {
+              setSearchTerm(e.target.value)
+            }}
           />
         </SearchContainer>
         <ProductsList restaurants={filteredRestaurants} background="salmon" />
@@ -68,5 +70,3 @@ const Home = () => {
     </>
   )
 }
-
-export default Home

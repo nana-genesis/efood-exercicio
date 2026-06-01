@@ -4,7 +4,7 @@ import Header from '../../components/Header'
 import Banner from '../../components/Banner'
 import MenuList from '../../components/MenuList'
 
-const RestaurantDetail = () => {
+export default function RestaurantDetail() {
   const { id } = useParams()
   const { data: restaurant, isLoading } = useGetRestaurantQuery(id!)
 
@@ -30,5 +30,3 @@ const RestaurantDetail = () => {
     </>
   )
 }
-
-export default RestaurantDetail

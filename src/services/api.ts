@@ -52,21 +52,29 @@ const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://api-ebac.vercel.app/api/efood'
   }),
-  endpoints: (builder) => ({
-    getRestaurants: builder.query<Restaurant[], void>({
-      query: () => 'restaurantes'
-    }),
-    getRestaurant: builder.query<Restaurant, string>({
-      query: (id) => `restaurantes/${id}`
-    }),
-    purchase: builder.mutation<any, PurchasePayload>({
-      query: (body) => ({
-        url: 'checkout',
-        method: 'POST',
-        body
+  endpoints: function (builder) {
+    return {
+      getRestaurants: builder.query<Restaurant[], void>({
+        query: function () {
+          return 'restaurantes'
+        }
+      }),
+      getRestaurant: builder.query<Restaurant, string>({
+        query: function (id) {
+          return 'restaurantes/' + id
+        }
+      }),
+      purchase: builder.mutation<any, PurchasePayload>({
+        query: function (body) {
+          return {
+            url: 'checkout',
+            method: 'POST',
+            body: body
+          }
+        }
       })
-    })
-  })
+    }
+  }
 })
 
 export const {

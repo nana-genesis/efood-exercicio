@@ -7,7 +7,7 @@ type Props = {
   showHome?: boolean
 }
 
-const Banner = ({ image, type, title, showHome }: Props) => {
+export default function Banner({ image, type, title, showHome }: Props) {
   if (showHome) {
     return (
       <Imagem style={{ backgroundImage: `url(${image})` }}>
@@ -27,5 +27,3 @@ const Banner = ({ image, type, title, showHome }: Props) => {
     </Imagem>
   )
 }
-
-export default Banner

@@ -9,17 +9,17 @@ type Props = {
   dish: ProductType
 }
 
-const Dish = ({ dish }: Props) => {
+export default function Dish({ dish }: Props) {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const dispatch = useDispatch()
 
-  const addToCart = () => {
+  function addToCart() {
     dispatch(add(dish))
     dispatch(open())
     setModalIsOpen(false)
   }
 
-  const getDescricao = (descricao: string) => {
+  function getDescricao(descricao: string) {
     if (descricao.length > 150) {
       return descricao.slice(0, 147) + '...'
     }
@@ -35,7 +35,9 @@ const Dish = ({ dish }: Props) => {
         <Button
           type="button"
           title="Clique aqui para ver detalhes"
-          onClick={() => setModalIsOpen(true)}
+          onClick={function () {
+            setModalIsOpen(true)
+          }}
         >
           Mais detalhes
         </Button>
@@ -50,7 +52,9 @@ const Dish = ({ dish }: Props) => {
               viewBox="0 0 16 16"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              onClick={() => setModalIsOpen(false)}
+              onClick={function () {
+                setModalIsOpen(false)
+              }}
               style={{ cursor: 'pointer' }}
             >
               <path
@@ -84,10 +88,12 @@ const Dish = ({ dish }: Props) => {
             </div>
           </main>
         </ModalContent>
-        <Overlay onClick={() => setModalIsOpen(false)} />
+        <Overlay
+          onClick={function () {
+            setModalIsOpen(false)
+          }}
+        />
       </Modal>
     </>
   )
 }
-
-export default Dish

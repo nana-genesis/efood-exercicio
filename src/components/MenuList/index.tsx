@@ -6,16 +6,16 @@ type Props = {
   items: ProductType[]
 }
 
-const MenuList = ({ items }: Props) => (
-  <Container>
-    <div className="container">
-      <List>
-        {items.map((item) => (
-          <Dish key={item.id} dish={item} />
-        ))}
-      </List>
-    </div>
-  </Container>
-)
-
-export default MenuList
+export default function MenuList({ items }: Props) {
+  return (
+    <Container>
+      <div className="container">
+        <List>
+          {items.map(function (item) {
+            return <Dish key={item.id} dish={item} />
+          })}
+        </List>
+      </div>
+    </Container>
+  )
+}

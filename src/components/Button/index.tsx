@@ -1,14 +1,16 @@
 import { ButtonContainer, ButtonLink } from './styles'
 
-type Props = {
+export type Props = {
   type: 'button' | 'link'
-  title: string //aqui é o texto q vai aparecer quando colocar o mouse sobre o botão
-  to?: string //aq vai ser o caminha, vai levar para algum lugar quando clicar no botão
-  onClick?: () => void //quando houver ações de clicks essa propriedade será ativca
+  title: string
+  to?: string
+  onClick?: () => void
   children: string
 }
 
-const Button = ({ type, title, to, onClick, children }: Props) => {
+export default function Button(props: Props) {
+  const { type, title, to, onClick, children } = props
+
   if (type === 'button') {
     return (
       <ButtonContainer type="button" title={title} onClick={onClick}>
@@ -17,12 +19,9 @@ const Button = ({ type, title, to, onClick, children }: Props) => {
     )
   }
 
-  //o type script estava reclamando do to então tive q acrescentar o (as string)
   return (
     <ButtonLink to={to as string} title={title}>
       {children}
     </ButtonLink>
   )
 }
-
-export default Button

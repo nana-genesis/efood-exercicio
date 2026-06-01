@@ -2,16 +2,33 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import { HeaderBar, LinkCart, Logo, HeaderRow } from './styles'
+import { HeaderBar, HeaderHero, LinkCart, Logo, HeaderRow } from './styles'
 import logoImg from '../../assets/images/logo.png'
 import { open } from '../../store/reducers/cart'
 import { RootState } from '../../store'
 
-export default function Header() {
+type Props = {
+  home?: boolean
+}
+
+export default function Header({ home = false }: Props) {
   const dispatch = useDispatch()
   const { items } = useSelector(function (state: RootState) {
     return state.cart
   })
+
+  if (home) {
+    return (
+      <HeaderHero>
+        <div className="container">
+          <Link to="/">
+            <Logo src={logoImg} alt="efood" />
+          </Link>
+          <h1>Viva experiências gastronômicas no conforto da sua casa</h1>
+        </div>
+      </HeaderHero>
+    )
+  }
 
   return (
     <HeaderBar>
@@ -26,7 +43,7 @@ export default function Header() {
               dispatch(open())
             }}
           >
-            {items.length} - produto(s)
+            {items.length} produto(s) no carrinho
             <svg
               width="21"
               height="20"

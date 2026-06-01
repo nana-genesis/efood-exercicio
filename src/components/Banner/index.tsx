@@ -4,20 +4,9 @@ type Props = {
   image?: string
   type?: string
   title?: string
-  showHome?: boolean
 }
 
-export default function Banner({ image, type, title, showHome }: Props) {
-  if (showHome) {
-    return (
-      <Imagem style={{ backgroundImage: `url(${image})` }}>
-        <div className="container">
-          <p>Viva experiências gastronômicas no conforto da sua casa</p>
-        </div>
-      </Imagem>
-    )
-  }
-
+export default function Banner({ image, type, title }: Props) {
   return (
     <Imagem style={{ backgroundImage: `url(${image})` }}>
       <BannerContainer className="container">

@@ -3,13 +3,12 @@ import { cores } from '../../styles'
 
 export const Imagem = styled.div`
   width: 100%;
-  height: 384px;
-  display: block;
+  height: 280px;
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
   position: relative;
   display: flex;
-  align-items: center;
 
   &::after {
     position: absolute;
@@ -20,27 +19,6 @@ export const Imagem = styled.div`
     background-color: rgba(0, 0, 0, 0.5);
     content: '';
   }
-
-  .container {
-    z-index: 1;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-  }
-
-  p {
-    color: ${cores.branca};
-    font-size: 36px;
-    font-weight: bold;
-    max-width: 680px;
-    line-height: 42px;
-    z-index: 1;
-    text-align: center;
-    margin: 0 auto;
-  }
 `
 
 export const BannerContainer = styled.div`
@@ -50,7 +28,7 @@ export const BannerContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  padding: 32px 0;
+  padding: 24px 0 32px;
 `
 
 export const BannerTag = styled.span`

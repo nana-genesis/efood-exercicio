@@ -1,7 +1,7 @@
 import { ButtonContainer, ButtonLink } from './styles'
 
 export type Props = {
-  type: 'button' | 'link'
+  type: 'button' | 'submit' | 'link'
   title: string
   to?: string
   onClick?: () => void
@@ -11,17 +11,17 @@ export type Props = {
 export default function Button(props: Props) {
   const { type, title, to, onClick, children } = props
 
-  if (type === 'button') {
+  if (type === 'link') {
     return (
-      <ButtonContainer type="button" title={title} onClick={onClick}>
+      <ButtonLink to={to as string} title={title}>
         {children}
-      </ButtonContainer>
+      </ButtonLink>
     )
   }
 
   return (
-    <ButtonLink to={to as string} title={title}>
+    <ButtonContainer type={type} title={title} onClick={onClick}>
       {children}
-    </ButtonLink>
+    </ButtonContainer>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store'
 import { clear, close } from '../../store/reducers/cart'
@@ -14,10 +14,12 @@ export default function Checkout({ onBack }: Props) {
   const [step, setStep] = useState<'delivery' | 'payment' | 'success'>(
     'delivery'
   )
+  const formRef = useRef<HTMLFormElement>(null)
   const { items } = useSelector(function (state: RootState) {
     return state.cart
   })
-  const [purchase, { data, isSuccess }] = usePurchaseMutation()
+  const [purchase, { isLoading }] = usePurchaseMutation()
+  const [orderId, setOrderId] = useState('')
   const dispatch = useDispatch()
 
   const totalPrice = items.reduce(function (acc, item) {
@@ -41,7 +43,11 @@ export default function Checkout({ onBack }: Props) {
     expiresYear: ''
   })
 
-  function handleSubmit(e: React.FormEvent) {
+  function submitCheckoutForm() {
+    formRef.current?.requestSubmit()
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (step === 'delivery') {
       setStep('payment')
@@ -72,16 +78,21 @@ export default function Checkout({ onBack }: Props) {
           }
         }
       }
-      purchase(payload)
-      setStep('success')
-      dispatch(clear())
+      try {
+        const response = await purchase(payload).unwrap()
+        setOrderId(response.orderId)
+        setStep('success')
+        dispatch(clear())
+      } catch {
+        alert('Não foi possível finalizar o pedido. Tente novamente.')
+      }
     }
   }
 
-  if (step === 'success' && isSuccess && data) {
+  if (step === 'success' && orderId) {
     return (
       <Sidebar>
-        <Title>Pedido realizado - {data.orderId}</Title>
+        <Title>Pedido realizado - {orderId}</Title>
         <p>
           Estamos felizes em informar que seu pedido já está em processo de
           preparação e, em breve, será entregue no endereço fornecido.
@@ -106,6 +117,7 @@ export default function Checkout({ onBack }: Props) {
           type="button"
           title="Concluir"
           onClick={function () {
+            onBack()
             dispatch(close())
           }}
         >
@@ -117,7 +129,7 @@ export default function Checkout({ onBack }: Props) {
 
   return (
     <Sidebar>
-      <form onSubmit={handleSubmit}>
+      <form ref={formRef} onSubmit={handleSubmit}>
         {step === 'delivery' ? (
           <>
             <Title>Entrega</Title>
@@ -201,8 +213,9 @@ export default function Checkout({ onBack }: Props) {
               />
             </InputGroup>
             <Button
-              type="submit"
+              type="button"
               title="Continuar com pagamento"
+              onClick={submitCheckoutForm}
             >
               Continuar com pagamento
             </Button>
@@ -296,8 +309,12 @@ export default function Checkout({ onBack }: Props) {
                 />
               </InputGroup>
             </Row>
-            <Button type="submit" title="Finalizar pagamento">
-              Finalizar pagamento
+            <Button
+              type="button"
+              title="Finalizar pagamento"
+              onClick={submitCheckoutForm}
+            >
+              {isLoading ? 'Finalizando...' : 'Finalizar pagamento'}
             </Button>
             <Button
               type="button"

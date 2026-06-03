@@ -10,6 +10,31 @@ type Props = {
   onBack: () => void
 }
 
+type OrderResponse = {
+  orderId: string
+  delivery?: {
+    receiver: string
+    address: {
+      description: string
+      city: string
+      zipCode: string
+      number: number
+      complement?: string
+    }
+  }
+  payment?: {
+    card: {
+      name: string
+      number: string
+      code: number
+      expires: {
+        month: number
+        year: number
+      }
+    }
+  }
+}
+
 export default function Checkout({ onBack }: Props) {
   const [step, setStep] = useState<'delivery' | 'payment' | 'success'>(
     'delivery'
@@ -19,7 +44,7 @@ export default function Checkout({ onBack }: Props) {
     return state.cart
   })
   const [purchase, { isLoading }] = usePurchaseMutation()
-  const [orderId, setOrderId] = useState('')
+  const [orderData, setOrderData] = useState<OrderResponse | null>(null)
   const dispatch = useDispatch()
 
   const totalPrice = items.reduce(function (acc, item) {
@@ -42,6 +67,41 @@ export default function Checkout({ onBack }: Props) {
     expiresMonth: '',
     expiresYear: ''
   })
+
+  // Helpers para validação
+  function handleOnlyNumbers(value: string): string {
+    return value.replace(/[^0-9]/g, '')
+  }
+
+  function formatCEP(value: string): string {
+    const cleaned = handleOnlyNumbers(value)
+    return cleaned.slice(0, 8)
+  }
+
+  function formatCardNumber(value: string): string {
+    const cleaned = handleOnlyNumbers(value)
+    return cleaned.slice(0, 16)
+  }
+
+  function formatCVV(value: string): string {
+    return handleOnlyNumbers(value).slice(0, 3)
+  }
+
+  function formatMonth(value: string): string {
+    const cleaned = handleOnlyNumbers(value)
+    if (cleaned.length === 0) return ''
+    const monthNum = parseInt(cleaned)
+    if (monthNum > 12) return '12'
+    return cleaned.slice(0, 2)
+  }
+
+  function formatYear(value: string): string {
+    return handleOnlyNumbers(value).slice(0, 4)
+  }
+
+  function formatNumber(value: string): string {
+    return handleOnlyNumbers(value)
+  }
 
   function submitCheckoutForm() {
     formRef.current?.requestSubmit()
@@ -80,7 +140,7 @@ export default function Checkout({ onBack }: Props) {
       }
       try {
         const response = await purchase(payload).unwrap()
-        setOrderId(response.orderId)
+        setOrderData(response)
         setStep('success')
         dispatch(clear())
       } catch {
@@ -89,15 +149,38 @@ export default function Checkout({ onBack }: Props) {
     }
   }
 
-  if (step === 'success' && orderId) {
+  if (step === 'success' && orderData) {
     return (
       <Sidebar>
-        <Title>Pedido realizado - {orderId}</Title>
+        <Title>Pedido realizado - {orderData.orderId}</Title>
         <p>
           Estamos felizes em informar que seu pedido já está em processo de
           preparação e, em breve, será entregue no endereço fornecido.
         </p>
         <br />
+
+        {orderData.delivery && (
+          <>
+            <strong>Dados da Entrega:</strong>
+            <p>
+              <strong>Nome:</strong> {orderData.delivery.receiver}
+            </p>
+            <p>
+              <strong>Endereço:</strong> {orderData.delivery.address.description},
+              {' '}
+              {orderData.delivery.address.number}
+              {orderData.delivery.address.complement && `, ${orderData.delivery.address.complement}`}
+            </p>
+            <p>
+              <strong>Cidade:</strong> {orderData.delivery.address.city}
+            </p>
+            <p>
+              <strong>CEP:</strong> {orderData.delivery.address.zipCode}
+            </p>
+            <br />
+          </>
+        )}
+
         <p>
           Gostaríamos de ressaltar que nossos entregadores não estão autorizados
           a realizar cobranças extras.
@@ -176,13 +259,16 @@ export default function Checkout({ onBack }: Props) {
                   required
                   id="zipCode"
                   type="text"
+                  inputMode="numeric"
+                  maxLength={8}
                   value={deliveryData.zipCode}
                   onChange={function (e) {
                     setDeliveryData({
                       ...deliveryData,
-                      zipCode: e.target.value
+                      zipCode: formatCEP(e.target.value)
                     })
                   }}
+                  placeholder="00000000"
                 />
               </InputGroup>
               <InputGroup>
@@ -191,9 +277,13 @@ export default function Checkout({ onBack }: Props) {
                   required
                   id="number"
                   type="text"
+                  inputMode="numeric"
                   value={deliveryData.number}
                   onChange={function (e) {
-                    setDeliveryData({ ...deliveryData, number: e.target.value })
+                    setDeliveryData({ 
+                      ...deliveryData, 
+                      number: formatNumber(e.target.value)
+                    })
                   }}
                 />
               </InputGroup>
@@ -255,13 +345,16 @@ export default function Checkout({ onBack }: Props) {
                   required
                   id="cardNumber"
                   type="text"
+                  inputMode="numeric"
+                  maxLength={16}
                   value={paymentData.cardNumber}
                   onChange={function (e) {
                     setPaymentData({
                       ...paymentData,
-                      cardNumber: e.target.value
+                      cardNumber: formatCardNumber(e.target.value)
                     })
                   }}
+                  placeholder="0000000000000000"
                 />
               </InputGroup>
               <InputGroup>
@@ -270,10 +363,16 @@ export default function Checkout({ onBack }: Props) {
                   required
                   id="cardCode"
                   type="text"
+                  inputMode="numeric"
+                  maxLength={3}
                   value={paymentData.cardCode}
                   onChange={function (e) {
-                    setPaymentData({ ...paymentData, cardCode: e.target.value })
+                    setPaymentData({ 
+                      ...paymentData, 
+                      cardCode: formatCVV(e.target.value)
+                    })
                   }}
+                  placeholder="000"
                 />
               </InputGroup>
             </Row>
@@ -284,13 +383,16 @@ export default function Checkout({ onBack }: Props) {
                   required
                   id="expiresMonth"
                   type="text"
+                  inputMode="numeric"
+                  maxLength={2}
                   value={paymentData.expiresMonth}
                   onChange={function (e) {
                     setPaymentData({
                       ...paymentData,
-                      expiresMonth: e.target.value
+                      expiresMonth: formatMonth(e.target.value)
                     })
                   }}
+                  placeholder="MM"
                 />
               </InputGroup>
               <InputGroup>
@@ -299,13 +401,16 @@ export default function Checkout({ onBack }: Props) {
                   required
                   id="expiresYear"
                   type="text"
+                  inputMode="numeric"
+                  maxLength={4}
                   value={paymentData.expiresYear}
                   onChange={function (e) {
                     setPaymentData({
                       ...paymentData,
-                      expiresYear: e.target.value
+                      expiresYear: formatYear(e.target.value)
                     })
                   }}
+                  placeholder="AAAA"
                 />
               </InputGroup>
             </Row>
